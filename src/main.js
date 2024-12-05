@@ -2,7 +2,19 @@
 var posterImage = document.querySelector(".poster-img");
 var posterTitle = document.querySelector(".poster-title");
 var posterQuote = document.querySelector(".poster-quote");
+var savedPostersArea = document.querySelector(".saved-posters")
+var mainPoster = document.querySelector(".main-poster");
+var makePosterForm = document.querySelector(".poster-form");      // needed to take out the class hidden in order for the form to show
+var imageInput = document.querySelector("#poster-image-url");
+var titleInput = document.querySelector("#poster-title");
+var quoteInput = document.querySelector("#poster-quote");
+
+var makePosterButton = document.querySelector(".show-form");
 var randomPosterButton = document.querySelector(".show-random");
+var savedPostersButton = document.querySelector(".show-saved");
+var nevermindButton = document.querySelector(".show-main");
+var backToMainButton = document.querySelector(".back-to-main");
+var showPosterButton = document.querySelector(".make-poster");
 
 // we've provided you with some data to work with 👇
 // tip: you can tuck this data out of view with the dropdown found near the line number where the variable is declared 
@@ -108,6 +120,12 @@ var currentPoster;
 
 // event listeners go here 👇
 randomPosterButton.addEventListener("click", showRandomPoster)
+makePosterButton.addEventListener("click", showForm)
+savedPostersButton.addEventListener("click", showSavedPosters)
+nevermindButton.addEventListener("click", takeMeBack)
+backToMainButton.addEventListener("click", backToMain)
+showPosterButton.addEventListener("click", showCreatedPoster)
+
 // functions and event handlers go here 👇
 // (we've provided two to get you started)!
 function getRandomIndex(array) {
@@ -131,7 +149,53 @@ function showRandomPoster() {
   posterImage.src = randomImage
   posterTitle.innerText = randomTitle
   posterQuote.innerText = randomQuote
-
   return randomPoster
 }
 showRandomPoster() //allows the main page to show a random image upon load 
+
+function showForm() {
+  mainPoster.classList.add("hidden")
+  makePosterForm.classList.remove("hidden")
+}
+
+function showSavedPosters() {
+  mainPoster.classList.add("hidden")             
+  savedPostersArea.classList.remove("hidden")                                                         
+}
+
+function takeMeBack() {
+  makePosterForm.classList.add("hidden")  // possible refractor
+  mainPoster.classList.remove("hidden")
+}
+
+function backToMain() {
+  savedPostersArea.classList.add("hidden")      // possible refractor
+  mainPoster.classList.remove("hidden")
+}
+
+function showCreatedPoster(event) {
+  event.preventDefault();
+
+  currentPoster = createPoster(imageInput.value, titleInput.value, quoteInput.value)
+
+  images.push(imageInput.value)
+  titles.push(titleInput.value)
+  quotes.push(quoteInput.value)
+
+  posterImage.src = currentPoster.imageURL
+  posterTitle.innerText = currentPoster.title
+  posterQuote.innerText = currentPoster.quote
+
+  mainPoster.classList.remove("hidden")
+  makePosterForm.classList.add("hidden")
+}
+
+// prevent default bahavior*
+// retrieve input values*
+// creating new poster object*
+// update current poster*
+// update the main poster view*
+// switch views*
+
+// problem: wont load picture, but loads title and quote
+// solution: ?
