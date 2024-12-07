@@ -8,6 +8,7 @@ var makePosterForm = document.querySelector(".poster-form");      // needed to t
 var imageInput = document.querySelector("#poster-image-url");
 var titleInput = document.querySelector("#poster-title");
 var quoteInput = document.querySelector("#poster-quote");
+var savedPostersGrid = document.querySelector(".saved-posters-grid");
 
 var makePosterButton = document.querySelector(".show-form");
 var randomPosterButton = document.querySelector(".show-random");
@@ -15,7 +16,7 @@ var savedPostersButton = document.querySelector(".show-saved");
 var nevermindButton = document.querySelector(".show-main");
 var backToMainButton = document.querySelector(".back-to-main");
 var showPosterButton = document.querySelector(".make-poster");
-
+var savePosterButton = document.querySelector(".save-poster");
 // we've provided you with some data to work with 👇
 // tip: you can tuck this data out of view with the dropdown found near the line number where the variable is declared 
 var images = [
@@ -125,7 +126,7 @@ savedPostersButton.addEventListener("click", showSavedPosters)
 nevermindButton.addEventListener("click", takeMeBack)
 backToMainButton.addEventListener("click", backToMain)
 showPosterButton.addEventListener("click", showCreatedPoster)
-
+savePosterButton.addEventListener("click", savePoster)
 // functions and event handlers go here 👇
 // (we've provided two to get you started)!
 function getRandomIndex(array) {
@@ -144,12 +145,12 @@ function showRandomPoster() {
   var randomImage = images[getRandomIndex(images)]
   var randomTitle = titles[getRandomIndex(titles)]
   var randomQuote = quotes[getRandomIndex(quotes)]
-  var randomPoster = createPoster(randomImage, randomTitle, randomQuote)
+  currentPoster = createPoster(randomImage, randomTitle, randomQuote)
   
-  posterImage.src = randomImage
-  posterTitle.innerText = randomTitle
-  posterQuote.innerText = randomQuote
-  return randomPoster
+  posterImage.src = currentPoster.imageURL
+  posterTitle.innerText = currentPoster.title
+  posterQuote.innerText = currentPoster.quote
+  return currentPoster
 }
 showRandomPoster() //allows the main page to show a random image upon load 
 
@@ -159,8 +160,20 @@ function showForm() {
 }
 
 function showSavedPosters() {
-  mainPoster.classList.add("hidden")             
-  savedPostersArea.classList.remove("hidden")                                                         
+  mainPoster.classList.add("hidden");
+  savedPostersArea.classList.remove("hidden");
+  savedPostersGrid.innerHTML = "";
+  // savedPosters  
+  console.log(savedPosters)
+  
+  for (var i = 0; i < savedPosters.length; i++) {
+    savedPostersGrid.innerHTML += 
+    `<article class="mini-poster">
+    <img class="poster-img" src="${savedPosters[i].imageURL}" alt="nothin' to see here">
+    <h2 class="poster-title">${savedPosters[i].title}</h1>
+    <h4 class="poster-quote">${savedPosters[i].quote}</h3>
+    </article>`
+  }
 }
 
 function takeMeBack() {
@@ -190,12 +203,12 @@ function showCreatedPoster(event) {
   makePosterForm.classList.add("hidden")
 }
 
-// prevent default bahavior*
-// retrieve input values*
-// creating new poster object*
-// update current poster*
-// update the main poster view*
-// switch views*
+function savePoster() {
+  if (!savedPosters.includes(currentPoster)) {
+    savedPosters.push(currentPoster) 
+  }
+} 
 
-// problem: wont load picture, but loads title and quote
-// solution: ?
+
+
+// make a function to add save posters array to the grid

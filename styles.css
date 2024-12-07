@@ -113,20 +113,25 @@ button:hover {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 20px;
-  padding: 20px;
+  column-gap: 5px;
+  padding: 80px;
+  justify-items: center;
+  align-items: start;
+  justify-content: space-between;
+  flex-direction: column;
 }
 
 .mini-poster {
   background: black;
   color: white;
-  height: 340px;
+  height: 400px;
   padding: 25px;
-  width: 425px;
+  width: 600px;
 }
 
 .mini-poster img {
-  height:200px;
-  width: 300px;
+  height:235px;
+  width: 500px;
 }
 
 .mini-poster h2,
