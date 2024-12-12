@@ -149,3 +149,21 @@ button:hover {
   margin-bottom: 10px;
   text-transform: uppercase;
 }
+
+.unmotivational-posters-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.unmotivational-mini-poster {
+  background: gray;
+  border-radius: 15px;
+}
+
+.poster-title-un {
+  color: black;
+}
+
+
