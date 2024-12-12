@@ -12,6 +12,7 @@ var savedPostersGrid = document.querySelector(".saved-posters-grid");
 var unmotivationalPostersGrid = document.querySelector(".unmotivational-posters-grid");
 var unmotivationalArea = document.querySelector(".unmotivational-posters");
 
+
 var makePosterButton = document.querySelector(".show-form");
 var randomPosterButton = document.querySelector(".show-random");
 var savedPostersButton = document.querySelector(".show-saved");
@@ -242,11 +243,20 @@ let unmotivationalPosters = [
     img_url: "./assets/doubt.jpg",
   }
 ];
+
 var savedPosters = [];
 var currentPoster;
 var cleanDataArray = [];
 
 // event listeners go here 👇
+ // research more: ensures DOM is ready for manipulation. faster than load event
+document.addEventListener("DOMContentLoaded", () => {             
+  showRandomPoster();
+  cleanData();
+  createUnmotivationalPosters()
+})
+
+
 randomPosterButton.addEventListener("click", showRandomPoster)
 makePosterButton.addEventListener("click", showForm)
 savedPostersButton.addEventListener("click", showSavedPosters)
@@ -256,6 +266,7 @@ showPosterButton.addEventListener("click", showCreatedPoster)
 savePosterButton.addEventListener("click", savePoster)
 unmotivationalButton.addEventListener("click", showUnmotivational)
 backToMainUnButton.addEventListener("click", unmotivationalbackToMain)
+unmotivationalPostersGrid.addEventListener("dblclick", deleteUnPoster)
 // functions and event handlers go here 👇
 // (we've provided two to get you started)!
 function getRandomIndex(array) {
@@ -264,10 +275,11 @@ function getRandomIndex(array) {
 
 function createPoster(imageURL, title, quote) {
   return {
-    id: Date.now(), 
+    id: Date.now() + Math.random(), 
     imageURL: imageURL, 
     title: title, 
-    quote: quote}
+    quote: quote
+  }
 }
 
 function showRandomPoster() {
@@ -281,7 +293,7 @@ function showRandomPoster() {
   posterQuote.innerText = currentPoster.quote
   return currentPoster
 }
-showRandomPoster() //allows the main page to show a random image upon load 
+
 
 function showForm() {
   mainPoster.classList.add("hidden")
@@ -292,8 +304,6 @@ function showSavedPosters() {
   mainPoster.classList.add("hidden");
   savedPostersArea.classList.remove("hidden");
   savedPostersGrid.innerHTML = "";
-  // savedPosters  
-  console.log(savedPosters)
   
   for (var i = 0; i < savedPosters.length; i++) {
     savedPostersGrid.innerHTML += 
@@ -336,20 +346,21 @@ function savePoster() {
   if (!savedPosters.includes(currentPoster)) {
     savedPosters.push(currentPoster) 
   }
-} 
+}
 
 function showUnmotivational(){
   unmotivationalArea.classList.remove("hidden")  
   mainPoster.classList.add("hidden")
+}
+
+function createUnmotivationalPosters() {
   unmotivationalPostersGrid.innerHTML = "";
-  
-  
-  for (var i = 0; i < unmotivationalPosters.length; i++) {
+  for (var i = 0; i < cleanDataArray.length; i++) {
     unmotivationalPostersGrid.innerHTML += 
-    `<article class="poster">
-    <img class="poster-img" src="${unmotivationalPosters[i].img_url}" alt="nothin' to see here">
-    <h2 class="poster-title">${unmotivationalPosters[i].name}</h1>
-    <h4 class="poster-quote">${unmotivationalPosters[i].description}</h3>
+    `<article class="mini-poster unmotivational-mini-poster" id="${cleanDataArray[i].id}">
+      <img class="poster-img" src="${cleanDataArray[i].imageURL}" alt="nothin' to see here">
+      <h2 class="poster-title-un">${cleanDataArray[i].title}</h2>
+      <h4 class="poster-quote">${cleanDataArray[i].quote}</h4>
     </article>`
   }
 }
@@ -360,7 +371,6 @@ function unmotivationalbackToMain(){
 }
 
 function cleanData() {
-  
   for (var i = 0; i < unmotivationalPosters.length; i++) {
     var cleanedPoster = createPoster(
       unmotivationalPosters[i].img_url, 
@@ -371,3 +381,37 @@ function cleanData() {
   }
   return cleanDataArray
 }
+
+function deleteUnPoster(event) {
+  var posterToDelete = event.target.closest(".unmotivational-mini-poster")    
+  // closest: is a method available on dom elements, searches up the dom tree to find closest matching
+  var id = posterToDelete.id
+  var newArray = cleanDataArray.filter((poster) => {       
+    return poster.id != id
+  })
+  cleanDataArray = newArray
+  console.log(cleanDataArray)
+  posterToDelete.remove()       //removes div element(mdn)
+  
+  
+  // for (var j = 0; j < cleanDataArray.length; j++) {
+  //   console.log(j)
+  //   console.log(posterToDelete.id)
+  //   var posterToDeleteParse = parseInt(posterToDelete.id)
+  //   if (posterToDeleteParse == j) {
+  //     cleanDataArray.splice(posterToDelete, 1)
+  //   }
+  // }
+  // console.log(cleanDataArray)
+  // return cleanDataArray
+}
+
+
+
+
+
+
+
+
+
+// attempting to connect soemthing being removed from the dom to be removed from the array
